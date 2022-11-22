@@ -9,6 +9,7 @@
 // Joel Adelaide Medeiros - RGM: 29799384
 // Marcos Barbosa Vieira Filho - RGM: 30174503
 // Maria Helena de Medeiros Silva - RGM: 30227151
+// Sidnei Marcos- RGM: 29818591
 
 //Inclusão de bibliotecas utilizadas no desenvolvimento do jogo
 #include<stdio.h> 
@@ -39,6 +40,8 @@ struct placar{
 	int vez;
 	int placarJogador1;
 	int placarJogador2;
+	char nomeJogador1[20];
+	char nomeJogador2[20];
 };
 
 // Método que define alguns prints iniciais do jogo
@@ -60,7 +63,9 @@ void printInicial(){
 	Sleep(1500);
 	printf("\t\t\tMarcos Barbosa Vieira Filho - RGM: 30174503\n");
 	Sleep(1500);
-	printf("\t\t\tMaria Helena de Medeiros Silva - RGM: 30227151\n\n\n");
+	printf("\t\t\tMaria Helena de Medeiros Silva - RGM: 30227151\n");
+	Sleep(1500);
+	printf("\t\t\tSidnei Marcos- RGM: 29818591\n\n\n");
 	Sleep(1500);
 	system("cls");
 
@@ -75,7 +80,7 @@ void printTopo(struct placar _placar){
 	else if(_placar.vez == 2)
 		printf("-*-*-*-*-*-*-*-*-*-*-*-  JOGADOR 2  *-*-*-*-*-*-*-*-*-*-*-*\n");
 	
-	printf("*-*-*-*-*-*-*-* JOGADOR 1 (%d) X (%d) JOGADOR 2 -*-*-*-*-*-*-\n\n", _placar.placarJogador1, _placar.placarJogador2);
+	printf("   JOGADOR 1 - (%s) (%d) X (%d) - (%s) JOGADOR 2   \n\n", _placar.nomeJogador1, _placar.placarJogador1, _placar.placarJogador2, _placar.nomeJogador2);
 	
 }
 
@@ -148,9 +153,9 @@ void printFinal(struct placar _placar){
 	
 	printf("-*-*-*-*-*-*-*-*-*-*  FINAL DO JOGO  -*-*-*-*-*-*-*-*-*-*\n");
 	if(_placar.placarJogador1 > _placar.placarJogador2){
-		printf("-*-*-*-*-*-*-*-*-*  JOGADOR 1 VENCEU!  -*-*-*-*-*-*-*-*-*\n");
+		printf("-*-*-*-*-*-*-*-*-* JOGADOR 1 VENCEU!  -*-*-*-*-*-*-*-*-*\n");
 		//dados a salvar caso o ganhador sejá o jogador 1
-		fprintf(salvar, "\njogaodor 1- %d        \n",_placar.placarJogador1);
+		fprintf(salvar, "\n %s- %d        \n",_placar.nomeJogador1,_placar.placarJogador1);
 		//fecha arquivo
 		fclose(salvar);
 		printf("Adicionado ao ranking");
@@ -158,7 +163,7 @@ void printFinal(struct placar _placar){
 	else if(_placar.placarJogador2 > _placar.placarJogador1){
 		printf("-*-*-*-*-*-*-*-*-*  JOGADOR 2 VENCEU!  -*-*-*-*-*-*-*-*-*\n");
 		//dados a salvar caso o ganhador sejá o jogador 2
-		fprintf(salvar, "\njogaodor 2- %d        \n",_placar.placarJogador1);
+		fprintf(salvar, "\n %s- %d        \n",_placar.nomeJogador2,_placar.placarJogador2);
 		//fecha arquivo
 		fclose(salvar);
 		printf("Adicionado ao ranking");
@@ -166,6 +171,26 @@ void printFinal(struct placar _placar){
 	else
 		printf("-*-*-*-*-*-*-*-*-*-*-*  EMPATE!  -*-*-*-*-*-*-*-*-*-*-*\n");
    
+}
+
+void embaralharMatriz(){
+	
+		int i,j,r,y,temp;
+	    
+	    for ( i = 0; i < 4; i++ ) {
+         for ( j = 0; j < 4; j++ ) {
+              r = rand ( ) % 4;
+              y = rand ( ) % 4;
+              temp = j1 [ i ] [ j ];
+              j1 [ i ] [ j ] = j1 [ r ] [ y ];
+              j1 [ r ] [ y ] = temp;
+         }
+     }
+     
+    for ( i = 0; i < 4; i++ ) {
+         for ( j = 0; j < 4; j++ ) {
+         	
+         	j2[i][j] = 0;}}
 }
 
 
@@ -202,12 +227,30 @@ int main(){
 	    _placar.placarJogador1 = 0;
 	    _placar.placarJogador2 = 0;
 	    _placar.vez = 1;
+	    
+		embaralharMatriz();
+		
+
 	    	
 	    if(op==1){
-	    	//PROCESSAMENTO
+	    //PROCESSAMENTO
+	    
+	    gameover=0;
+	    	
+	    system("cls");
+	    	
+	    printf("Digite o nome do Jogador 1: ");
+	    scanf("%s", _placar.nomeJogador1);
+	    printf("Digite o nome do Jogador 2: ");
+	    scanf("%s", _placar.nomeJogador2);
+	            
+	    system("cls");
+	    
+	    	
 	        while(!gameover){
 	        	
 	            jgd1: system("cls");
+
 	            printTopo(_placar);
 	            printTabuleiro();
 	            
@@ -318,11 +361,12 @@ int main(){
 			
 			//getch();
 	    	
-	    	
+	    
 		
 		}
 		else if(op==3){
 			//mostra os créditos
+			system("cls");
 			printInicial();
 		}
 	
